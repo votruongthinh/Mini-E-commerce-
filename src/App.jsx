@@ -7,6 +7,7 @@ import Cart from "./pages/Cart";
 import CheckOut from "./pages/CheckOut";
 import { ToastContainer } from "react-toastify";
 import NotFound from "./pages/NotFound";
+import FavoritesPage from "./pages/FavoritesPage";
 
 function App() {
   return (
@@ -19,10 +20,11 @@ function App() {
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<CheckOut />} />
+            <Route path="/favorites" element={<FavoritesPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <ToastContainer
-            position="top-center"
+            position="top-right"
             autoClose={2000}
             style={{ top: "80px" }}
           />

@@ -3,7 +3,7 @@ import { getCategories } from "../../utils/api.js";
 import { useCart } from "../../contexts/CartContext";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-
+import logo from "../../assets/shopee-logo-png.webp";
 const NavBar = () => {
   const { cart } = useCart();
   const navigate = useNavigate();
@@ -69,27 +69,28 @@ const NavBar = () => {
     >
       <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between nav-container gap-2 sm:gap-3 lg:gap-4">
         {/* Logo (giữa trên mobile, trái trên tablet/desktop) */}
+
         <Link
           to="/"
           className="flex items-center justify-center sm:justify-start space-x-2"
         >
           <motion.img
-            src="/src/assets/shopee-logo-png.webp"
+            src={logo}
             alt="Shopee Clone"
-            className="h-7 sm:h-9 lg:h-10"
+            className="h-7 sm:h-9 lg:h-10 p-2 bg-white border border-gray-200 rounded-md shadow-md"
             whileHover={{ scale: 1.1, rotate: 5 }}
             transition={{ duration: 0.2 }}
           />
         </Link>
-
         {/* Toggle menu hamburger */}
+
         <button
-          className="sm:hidden focus:outline-none absolute right-2 top-2"
+          className="sm:hidden focus:outline-none absolute right-4 top-2 p-1 bg-white rounded-md shadow-md hover:bg-gray-100 transition-all duration-300"
           onClick={toggleMenu}
           aria-label="Toggle menu"
         >
           <svg
-            className="w-6 h-6"
+            className="w-6 h-6 text-orange-500"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -119,11 +120,11 @@ const NavBar = () => {
               placeholder="Tìm kiếm sản phẩm..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full p-2 text-sm sm:text-base lg:text-lg text-gray-800 rounded-l-md border-none focus:outline-none focus:ring-2 focus:ring-orange-300 bg-white shadow-md transition-all duration-300"
+              className="w-full mb-2 h-10 sm:h-12 lg:h-14 text-sm sm:text-base lg:text-lg text-gray-800 rounded-l-md border-none focus:outline-none focus:ring-2 focus:ring-orange-300 bg-white shadow-md transition-all duration-300"
             />
             <button
               type="submit"
-              className="bg-blue-600 p-2 rounded-r-md hover:bg-blue-700 shadow-md transition-all duration-300"
+              className="mb-2 h-10 sm:h-12 lg:h-14 bg-blue-600 px-4 rounded-r-md hover:bg-blue-700 shadow-md transition-all duration-300 flex items-center justify-center"
             >
               <svg
                 className="w-5 h-5 lg:w-6 lg:h-6"
@@ -142,7 +143,7 @@ const NavBar = () => {
           </form>
 
           {/* Danh mục và giỏ hàng */}
-          <div className="w-full sm:w-auto flex items-center justify-between sm:justify-start sm:space-x-4 md:space-x-6 lg:space-x-8">
+          <div className="w-full sm:w-auto flex sm:justify-start sm:space-x-4 md:space-x-6 lg:space-x-8">
             {/* Danh mục */}
             <div className="relative category-group">
               <button
@@ -194,7 +195,21 @@ const NavBar = () => {
                 )}
               </motion.div>
             </div>
-
+            {/* mục yêu thích */}
+            <Link
+              to="/favorites"
+              className="relative flex items-center justify-center"
+            >
+              <motion.svg
+                className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                whileHover={{ scale: 1.2, rotate: 5 }}
+                transition={{ duration: 0.2 }}
+              >
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              </motion.svg>
+            </Link>
             {/* Giỏ hàng */}
             <Link
               to="/cart"

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import notFoundImage from "/src/assets/404.jpg"; // Import hình ảnh
+import notFoundImage from "../assets/notfound.jpg"; // Import hình ảnh
 
 const NotFound = () => {
   return (

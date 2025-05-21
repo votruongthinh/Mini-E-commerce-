@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect, useContext } from "react";
+import { getProducts } from "../utils/api.js";
 
 const CartContext = createContext();
 
@@ -7,12 +8,24 @@ export function CartProvider({ children }) {
     const saveCart = localStorage.getItem("cart");
     return saveCart ? JSON.parse(saveCart) : [];
   });
+
+  //lưu trạng thái ưu thích vào localstorage
+  const [favorites, setFavorites] = useState(() => {
+    const savedFavorites = localStorage.getItem("favorites");
+    return savedFavorites ? JSON.parse(savedFavorites) : [];
+  });
+
   const clearCart = () => {
     setCart([]);
   };
+
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
+
+  useEffect(() => {
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+  }, [favorites]);
 
   //them vao gio hang
   const addToCart = (product) => {
@@ -38,10 +51,29 @@ export function CartProvider({ children }) {
       prevCart.map((item) => (item.id === id ? { ...item, quantity } : item))
     );
   };
-
+  //
+  const toggleFavorite = (product) => {
+    setFavorites((prevFavorites) => {
+      const isAlreadyFavorite = prevFavorites.some(
+        (item) => item.id === product.id
+      );
+      if (isAlreadyFavorite) {
+        return prevFavorites.filter((item) => item.id !== product.id);
+      }
+      return [...prevFavorites, { ...product, isFavorite: true }];
+    });
+  };
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart }}
+      value={{
+        cart,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        clearCart,
+        favorites,
+        toggleFavorite,
+      }}
     >
       {children}
     </CartContext.Provider>

@@ -8,6 +8,7 @@ import {
   getProductsByCategory,
   getCategories,
 } from "../utils/api.js";
+import banner from "../assets/banner-shopee-5.webp";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 
@@ -314,7 +315,7 @@ const Home = () => {
         transition={{ duration: 0.8 }}
       >
         <img
-          src="/src/assets/banner-shopee-5.webp"
+          src={banner}
           alt="Banner"
           className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg shadow-lg"
         />
@@ -366,7 +367,6 @@ const Home = () => {
             placeholder="Tìm kiếm sản phẩm..."
             value={tempSearch}
             onChange={(e) => handleSearchChange(e.target.value)}
-            onKeyPress={handleKeyPress}
             className="w-full sm:flex-1 px-4 py-2 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors"
           />
           <button
@@ -413,12 +413,12 @@ const Home = () => {
           <div className="flex flex-col sm:flex-row gap-2">
             <input
               type="number"
-              placeholder="Giá từ"
+              placeholder="Giá từ (tối thiếu 100000)"
               value={tempPriceRange[0] || ""}
               onChange={(e) =>
                 setTempPriceRange([+e.target.value || 0, tempPriceRange[1]])
               }
-              className="w-full px-4 py-2 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+              className="w-full px-2 py-1 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
             />
             <input
               type="number"
@@ -430,11 +430,11 @@ const Home = () => {
                   +e.target.value || maxPrice,
                 ])
               }
-              className="w-full px-4 py-2 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+              className="w-full px-2 py-1 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
             />
             <button
               onClick={applyPriceFilter}
-              className="w-full sm:w-auto px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+              className="w-full sm:w-auto px-2 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
             >
               Áp dụng
             </button>
@@ -478,15 +478,15 @@ const Home = () => {
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+            className=" cursor-pointer px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
           >
             Trước
           </button>
           {getPaginationRange().map((page, index) =>
             page === "..." ? (
               <span
-                key={`ellipsis-${index}`}
-                className="px-4 py-2 text-gray-500"
+                key={` cursor-pointerellipsis-${index}`}
+                className="cursor-pointer px-4 py-2 text-gray-500"
               >
                 ...
               </span>
@@ -494,7 +494,7 @@ const Home = () => {
               <button
                 key={page}
                 onClick={() => handlePageChange(page)}
-                className={`px-4 py-2 rounded ${
+                className={`cursor-pointer px-4 py-2 rounded ${
                   currentPage === page
                     ? "bg-orange-500 text-white"
                     : "bg-gray-200"
@@ -507,7 +507,7 @@ const Home = () => {
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+            className="cursor-pointer px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
           >
             Sau
           </button>

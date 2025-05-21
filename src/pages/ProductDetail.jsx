@@ -53,7 +53,7 @@ const ProductDetail = () => {
   const handleAddToCart = () => {
     addToCart({ ...product, price: priceInVND });
     toast.success(`${product.title} đã được thêm vào giỏ hàng`, {
-      position: "top-center",
+      position: "top-right",
     });
   };
 
@@ -81,14 +81,14 @@ const ProductDetail = () => {
             {product.title}
           </h1>
           <p className="text-red-500 text-xl font-semibold mt-2">
-            {priceInVND.toLocaleString()}đ
+            {priceInVND.toLocaleString()} đ
           </p>
           <p className="mt-4 text-gray-700 leading-relaxed">
             {product.description}
           </p>
           <button
             onClick={handleAddToCart}
-            className="mt-6 bg-green-500 hover:bg-green-600 font-semibold transition duration-200 text-white px-4 py-2 rounded"
+            className="cursor-pointer mt-6 bg-green-500 hover:bg-green-600 font-semibold transition duration-200 text-white px-4 py-2 rounded"
           >
             Thêm vào giỏ hàng
           </button>
