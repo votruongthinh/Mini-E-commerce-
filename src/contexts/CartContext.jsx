@@ -7,15 +7,17 @@ export function CartProvider({ children }) {
     const saveCart = localStorage.getItem("cart");
     return saveCart ? JSON.parse(saveCart) : [];
   });
-
+  const clearCart = () => {
+    setCart([]);
+  };
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
-  
+
   //them vao gio hang
   const addToCart = (product) => {
     setCart((prevCart) => {
-      const existingItem = prevCart.find((item) => item.id === productduct.id);
+      const existingItem = prevCart.find((item) => item.id === product.id);
       if (existingItem) {
         return prevCart.map((item) =>
           item.id === product.id
@@ -39,7 +41,7 @@ export function CartProvider({ children }) {
 
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, updateQuantity }}
+      value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart }}
     >
       {children}
     </CartContext.Provider>
