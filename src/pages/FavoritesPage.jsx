@@ -111,7 +111,7 @@ const FavoritesPage = () => {
   };
 
   const getPaginationRange = () => {
-    const maxPagesToShow = 5;
+    const maxPagesToShow = 3;
     const ellipsis = "...";
 
     if (totalPages <= maxPagesToShow) {
@@ -205,7 +205,7 @@ const FavoritesPage = () => {
         <img
           src={banner}
           alt="Banner"
-          className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg shadow-lg"
+          className="w-full h-auto min-h-48 sm:h-80 lg:h-96 object-contain rounded-lg shadow-lg"
         />
       </motion.div>
 
@@ -298,7 +298,7 @@ const FavoritesPage = () => {
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="px-3 py-1 sm:px-4 sm:py-2 bg-gray-200 rounded disabled:opacity-50 min-w-[40px] sm:min-w-[auto] text-sm sm:text-base"
+              className="px-1 py-0.5 sm:px-4 sm:py-2 bg-gray-200 rounded disabled:opacity-50 min-w-[32px] sm:min-w-[auto] text-sm sm:text-base"
             >
               Trước
             </button>
@@ -306,7 +306,7 @@ const FavoritesPage = () => {
               page === "..." ? (
                 <span
                   key={`ellipsis-${index}`}
-                  className="px-2 py-1 sm:px-4 sm:py-2 text-gray-500 min-w-[40px] sm:min-w-[auto] text-sm sm:text-base flex items-center justify-center"
+                  className="px-1 py-0.5 sm:px-4 sm:py-2 text-gray-500 min-w-[32px] sm:min-w-[auto] text-sm sm:text-base flex items-center justify-center"
                 >
                   ...
                 </span>
@@ -314,7 +314,7 @@ const FavoritesPage = () => {
                 <button
                   key={page}
                   onClick={() => handlePageChange(page)}
-                  className={`px-3 py-1 sm:px-4 sm:py-2 rounded min-w-[40px] sm:min-w-[auto] text-sm sm:text-base ${
+                  className={`px-1 py-0.5 sm:px-4 sm:py-2 rounded min-w-[32px] sm:min-w-[auto] text-sm sm:text-base ${
                     currentPage === page
                       ? "bg-orange-500 text-white"
                       : "bg-gray-200"
@@ -327,7 +327,7 @@ const FavoritesPage = () => {
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="px-3 py-1 sm:px-4 sm:py-2 bg-gray-200 rounded disabled:opacity-50 min-w-[40px] sm:min-w-[auto] text-sm sm:text-base"
+              className="px-1 py-0.5 sm:px-4 sm:py-2 bg-gray-200 rounded disabled:opacity-50 min-w-[32px] sm:min-w-[auto] text-sm sm:text-base"
             >
               Sau
             </button>

@@ -236,7 +236,7 @@ const Home = () => {
   };
 
   const getPaginationRange = () => {
-    const maxPagesToShow = 5;
+    const maxPagesToShow = 3;
     const ellipsis = "...";
 
     if (totalPages <= maxPagesToShow) {
@@ -463,7 +463,7 @@ const Home = () => {
 
       {totalPages > 1 && (
         <motion.div
-          className="flex justify-center gap-1 sm:gap-2 mt-8 overflow-x-auto scrollbar-hide"
+          className="cursor-pointer flex justify-center gap-1 sm:gap-2 mt-4 overflow-x-auto scrollbar-hide"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.8 }}
@@ -472,7 +472,7 @@ const Home = () => {
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="px-3 py-1 sm:px-4 sm:py-2 bg-gray-200 rounded disabled:opacity-50 min-w-[40px] sm:min-w-[auto] text-sm sm:text-base"
+              className="px-1 py-0.5 sm:px-3 sm:py-2 bg-gray-200 rounded disabled:opacity-50 min-w-[32px] sm:min-w-[auto] text-sm sm:text-base"
             >
               Trước
             </button>
@@ -480,7 +480,7 @@ const Home = () => {
               page === "..." ? (
                 <span
                   key={`ellipsis-${index}`}
-                  className="px-2 py-1 sm:px-4 sm:py-2 text-gray-500 min-w-[40px] sm:min-w-[auto] text-sm sm:text-base flex items-center justify-center"
+                  className="px-1 py-0.5 sm:px-4 sm:py-2 text-gray-500 min-w-[32px] sm:min-w-[auto] text-sm sm:text-base flex items-center justify-center"
                 >
                   ...
                 </span>
@@ -488,7 +488,7 @@ const Home = () => {
                 <button
                   key={page}
                   onClick={() => handlePageChange(page)}
-                  className={`px-3 py-1 sm:px-4 sm:py-2 rounded min-w-[40px] sm:min-w-[auto] text-sm sm:text-base ${
+                  className={`px-1 py-0.5 sm:px-4 sm:py-2 rounded min-w-[32px] sm:min-w-[auto] text-sm sm:text-base ${
                     currentPage === page
                       ? "bg-orange-500 text-white"
                       : "bg-gray-200"
@@ -501,7 +501,7 @@ const Home = () => {
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="px-3 py-1 sm:px-4 sm:py-2 bg-gray-200 rounded disabled:opacity-50 min-w-[40px] sm:min-w-[auto] text-sm sm:text-base"
+              className="px-1 py-0.5 sm:px-4 sm:py-2 bg-gray-200 rounded disabled:opacity-50 min-w-[32px] sm:min-w-[auto] text-sm sm:text-base"
             >
               Sau
             </button>

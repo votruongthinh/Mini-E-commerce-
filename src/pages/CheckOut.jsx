@@ -4,7 +4,7 @@ import { useCart } from "../contexts/CartContext";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import success from "../assets/success.webp";
+import success from "../assets/check.gif";
 
 const Checkout = () => {
   const { cart, clearCart } = useCart();
@@ -48,7 +48,7 @@ const Checkout = () => {
       </motion.h1>
 
       <motion.div
-        className="bg-white p-6 rounded-lg shadow-lg max-w-2xl mx-auto"
+        className="bg-white p-4 sm:p-6 rounded-lg shadow-lg max-w-md mx-auto"
         initial={{ scale: 0.95 }}
         animate={{ scale: 1 }}
         transition={{ duration: 0.3 }}
@@ -115,7 +115,7 @@ const Checkout = () => {
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.3 }}
             >
-              <p className="text-2xl font-bold text-green-600">
+              <p className="text-xl sm:text-2xl font-bold text-green-600">
                 Tổng: {total.toLocaleString()} đ
               </p>
             </motion.div>
