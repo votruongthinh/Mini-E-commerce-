@@ -18,7 +18,7 @@ const FavoritesPage = () => {
   const [loading, setLoading] = useState(true);
   const productsPerPage = 6;
 
-  // Tính maxPrice và priceRange, đảm bảo giá gốc chưa nhân 25000
+  // Tính maxPrice và priceRange
   useEffect(() => {
     if (allFavorites.length > 0) {
       const max = Math.max(...allFavorites.map((p) => p.price * 25000));
@@ -44,7 +44,7 @@ const FavoritesPage = () => {
     if (sortBy === "price-asc") {
       filteredFavorites.sort((a, b) => a.price - b.price);
     } else if (sortBy === "price-desc") {
-      filteredFavorites.sort((a, b) => b.price - a.price);
+      filteredFavorites.sort((a, b) => b.price - b.price);
     } else if (sortBy === "name") {
       filteredFavorites.sort((a, b) => a.title.localeCompare(b.title));
     }
@@ -52,7 +52,16 @@ const FavoritesPage = () => {
     setFavorites(filteredFavorites);
     setTotal(filteredFavorites.length);
     setLoading(false);
+
+    // Debug: Kiểm tra giá trị total và filteredFavorites
+    console.log("Filtered Favorites:", filteredFavorites);
+    console.log("Total:", filteredFavorites.length);
   }, [allFavorites, priceRange, sortBy, maxPrice]);
+
+  // Đặt lại currentPage về 1 khi truy cập lại /favorites
+  useEffect(() => {
+    setCurrentPage(1);
+  }, []);
 
   // Áp dụng bộ lọc giá
   const applyPriceFilter = () => {
@@ -90,10 +99,14 @@ const FavoritesPage = () => {
   };
 
   const totalPages = Math.ceil(total / productsPerPage);
+
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
       window.scrollTo({ top: 0, behavior: "smooth" });
+      // Debug: Kiểm tra currentPage và totalPages
+      console.log("Current Page:", page);
+      console.log("Total Pages:", totalPages);
     }
   };
 
@@ -137,7 +150,6 @@ const FavoritesPage = () => {
     return favorites.slice(startIndex, endIndex).map((product) => (
       <div key={product.id} className="relative">
         <ProductCard product={product} priceFormatted={product.price * 25000} />
-
         <button
           onClick={() => handleRemoveFavorite(product.id)}
           className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors"
@@ -273,47 +285,53 @@ const FavoritesPage = () => {
 
       {totalPages > 1 && (
         <motion.div
-          className="flex justify-center gap-2 mt-8"
+          className="mt-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.8 }}
         >
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
-          >
-            Trước
-          </button>
-          {getPaginationRange().map((page, index) =>
-            page === "..." ? (
-              <span
-                key={`ellipsis-${index}`}
-                className="px-4 py-2 text-gray-500"
-              >
-                ...
-              </span>
-            ) : (
-              <button
-                key={page}
-                onClick={() => handlePageChange(page)}
-                className={`px-4 py-2 rounded ${
-                  currentPage === page
-                    ? "bg-orange-500 text-white"
-                    : "bg-gray-200"
-                }`}
-              >
-                {page}
-              </button>
-            )
-          )}
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
-          >
-            Sau
-          </button>
+          {/* Hiển thị số trang dạng "Trang X/Y" */}
+          <div className="text-center mb-4 text-lg font-medium text-gray-700">
+            Trang {currentPage}/{totalPages}
+          </div>
+          <div className="flex justify-center gap-1 sm:gap-2 overflow-x-auto scrollbar-hide">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-3 py-1 sm:px-4 sm:py-2 bg-gray-200 rounded disabled:opacity-50 min-w-[40px] sm:min-w-[auto] text-sm sm:text-base"
+            >
+              Trước
+            </button>
+            {getPaginationRange().map((page, index) =>
+              page === "..." ? (
+                <span
+                  key={`ellipsis-${index}`}
+                  className="px-2 py-1 sm:px-4 sm:py-2 text-gray-500 min-w-[40px] sm:min-w-[auto] text-sm sm:text-base flex items-center justify-center"
+                >
+                  ...
+                </span>
+              ) : (
+                <button
+                  key={page}
+                  onClick={() => handlePageChange(page)}
+                  className={`px-3 py-1 sm:px-4 sm:py-2 rounded min-w-[40px] sm:min-w-[auto] text-sm sm:text-base ${
+                    currentPage === page
+                      ? "bg-orange-500 text-white"
+                      : "bg-gray-200"
+                  }`}
+                >
+                  {page}
+                </button>
+              )
+            )}
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1 sm:px-4 sm:py-2 bg-gray-200 rounded disabled:opacity-50 min-w-[40px] sm:min-w-[auto] text-sm sm:text-base"
+            >
+              Sau
+            </button>
+          </div>
         </motion.div>
       )}
     </div>

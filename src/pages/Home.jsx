@@ -32,21 +32,22 @@ const Home = () => {
   const [error, setError] = useState("");
   const productsPerPage = 6;
 
+  // Đồng bộ search, category và page từ query string
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    //console.log("Query params:", params.toString());
     const searchQuery = params.get("search") || "";
     const categoryQuery = params.get("category") || "";
+    const pageQuery = parseInt(params.get("page")) || 1; // Lấy page từ query string, mặc định là 1
+
     setSearch(searchQuery.toLowerCase());
     setTempSearch(searchQuery);
     setCategory(categoryQuery);
-    setCurrentPage(1);
+    setCurrentPage(pageQuery); // Đồng bộ currentPage với page trong URL
   }, [location.search]);
 
   useEffect(() => {
     getCategories()
       .then((data) => {
-        //console.log("Categories data:", data);
         if (Array.isArray(data)) {
           setCategories(
             data.map((cat) => ({
@@ -68,7 +69,6 @@ const Home = () => {
     const fetchMaxPrice = async () => {
       try {
         const data = await getProducts(1, 100);
-        //console.log("Products data for max price:", data);
         if (data.products && Array.isArray(data.products)) {
           const max = Math.max(...data.products.map((p) => p.price * 25000));
           setMaxPrice(max);
@@ -114,7 +114,6 @@ const Home = () => {
         let data;
         if (search) {
           data = await searchProducts(search.toLowerCase());
-          //console.log("Search API response:", data);
           if (data.products && Array.isArray(data.products)) {
             data.products = data.products.filter((product) =>
               product.title.toLowerCase().includes(search.toLowerCase())
@@ -126,7 +125,7 @@ const Home = () => {
         } else {
           data = await getProducts(currentPage, productsPerPage);
         }
-        //console.log("Processed API response:", data);
+
         if (!data || !data.products || !Array.isArray(data.products)) {
           throw new Error("Invalid API response: products is not an array");
         }
@@ -182,7 +181,7 @@ const Home = () => {
     if (tempSearch.trim() === "") {
       setSearch("");
       setSuggestions([]);
-      navigate("/");
+      navigate("/"); // Điều hướng về / khi không có từ khóa tìm kiếm
     } else {
       setSearch(tempSearch.toLowerCase());
       setSuggestions([]);
@@ -209,6 +208,10 @@ const Home = () => {
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
+      // Thêm query string page vào URL
+      const params = new URLSearchParams(location.search);
+      params.set("page", page);
+      navigate(`/?${params.toString()}`);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
@@ -317,18 +320,8 @@ const Home = () => {
         <img
           src={banner}
           alt="Banner"
-          className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg shadow-lg"
+          className="w-full h-auto min-h-48 sm:h-80 lg:h-96 object-contain rounded-lg shadow-lg"
         />
-        {/* <div className="absolute inset-0 flex items-center justify-center text-white">
-          <motion.h2
-            className="text-2xl sm:text-4xl font-bold"
-            initial={{ scale: 0.8 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            Siêu khuyến mãi tháng 5!
-          </motion.h2>
-        </div> */}
       </motion.div>
 
       <motion.div
@@ -470,47 +463,49 @@ const Home = () => {
 
       {totalPages > 1 && (
         <motion.div
-          className="flex justify-center gap-2 mt-8"
+          className="flex justify-center gap-1 sm:gap-2 mt-8 overflow-x-auto scrollbar-hide"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.8 }}
         >
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className=" cursor-pointer px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
-          >
-            Trước
-          </button>
-          {getPaginationRange().map((page, index) =>
-            page === "..." ? (
-              <span
-                key={` cursor-pointerellipsis-${index}`}
-                className="cursor-pointer px-4 py-2 text-gray-500"
-              >
-                ...
-              </span>
-            ) : (
-              <button
-                key={page}
-                onClick={() => handlePageChange(page)}
-                className={`cursor-pointer px-4 py-2 rounded ${
-                  currentPage === page
-                    ? "bg-orange-500 text-white"
-                    : "bg-gray-200"
-                }`}
-              >
-                {page}
-              </button>
-            )
-          )}
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className="cursor-pointer px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
-          >
-            Sau
-          </button>
+          <div className="flex justify-center gap-1 sm:gap-2 overflow-x-auto scrollbar-hide">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-3 py-1 sm:px-4 sm:py-2 bg-gray-200 rounded disabled:opacity-50 min-w-[40px] sm:min-w-[auto] text-sm sm:text-base"
+            >
+              Trước
+            </button>
+            {getPaginationRange().map((page, index) =>
+              page === "..." ? (
+                <span
+                  key={`ellipsis-${index}`}
+                  className="px-2 py-1 sm:px-4 sm:py-2 text-gray-500 min-w-[40px] sm:min-w-[auto] text-sm sm:text-base flex items-center justify-center"
+                >
+                  ...
+                </span>
+              ) : (
+                <button
+                  key={page}
+                  onClick={() => handlePageChange(page)}
+                  className={`px-3 py-1 sm:px-4 sm:py-2 rounded min-w-[40px] sm:min-w-[auto] text-sm sm:text-base ${
+                    currentPage === page
+                      ? "bg-orange-500 text-white"
+                      : "bg-gray-200"
+                  }`}
+                >
+                  {page}
+                </button>
+              )
+            )}
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1 sm:px-4 sm:py-2 bg-gray-200 rounded disabled:opacity-50 min-w-[40px] sm:min-w-[auto] text-sm sm:text-base"
+            >
+              Sau
+            </button>
+          </div>
         </motion.div>
       )}
     </div>

@@ -4,9 +4,10 @@ import { useCart } from "../../contexts/CartContext";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import logo from "../../assets/shopee-logo-png.webp";
+
 const NavBar = () => {
   const { cart } = useCart();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Giữ useNavigate cho handleSearch
   const [search, setSearch] = useState("");
   const [categories, setCategories] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -57,33 +58,41 @@ const NavBar = () => {
     }
   };
 
+  const handleLogoClick = (e) => {
+    e.preventDefault(); // Ngăn Link tự động điều hướng
+    console.log("Logo clicked, navigating to home");
+    setSearch("");
+    setIsMenuOpen(false);
+    setIsCategoryOpen(false);
+    navigate("/"); // Sử dụng navigate để điều hướng thủ công
+  };
+
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleCategory = () => setIsCategoryOpen(!isCategoryOpen);
 
   return (
     <motion.nav
-      className="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-2 sm:p-3 lg:p-4 sticky top-0 z-30 shadow-lg"
+      className="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-2 sm:p-3 lg:p-4 sticky top-0 z-50 shadow-lg"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
     >
       <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between nav-container gap-2 sm:gap-3 lg:gap-4">
-        {/* Logo (giữa trên mobile, trái trên tablet/desktop) */}
-
+        {/* Logo */}
         <Link
           to="/"
-          className="flex items-center justify-center sm:justify-start space-x-2"
+          onClick={handleLogoClick}
+          className="flex items-center justify-center sm:justify-start space-x-2 z-50"
         >
           <motion.img
             src={logo}
             alt="Shopee Clone"
-            className="h-7 sm:h-9 lg:h-10 p-2 bg-white border border-gray-200 rounded-md shadow-md"
-            whileHover={{ scale: 1.1, rotate: 5 }}
+            className="h-10 sm:h-9 lg:h-10 p-1 bg-white border border-gray-300 rounded-md shadow-lg"
+            whileTap={{ scale: 1.1, rotate: 5 }} // Thay whileHover bằng whileTap
             transition={{ duration: 0.2 }}
           />
         </Link>
         {/* Toggle menu hamburger */}
-
         <button
           className="sm:hidden focus:outline-none absolute right-4 top-2 p-1 bg-white rounded-md shadow-md hover:bg-gray-100 transition-all duration-300"
           onClick={toggleMenu}
@@ -110,24 +119,24 @@ const NavBar = () => {
             isMenuOpen ? "block" : "hidden sm:flex"
           } sm:items-center sm:space-x-4 md:space-x-6 lg:space-x-8 flex-col sm:flex-row`}
         >
-          {/* Thanh tìm kiếm (dưới logo trên mobile, ngang trên tablet/desktop) */}
+          {/* Thanh tìm kiếm */}
           <form
             onSubmit={handleSearch}
-            className="w-full sm:w-64 md:w-72 lg:w-96 mb-2 sm:mb-0 flex items-center"
+            className="w-full sm:w-64 md:w-72 lg:w-80 mb-2 sm:mb-0 flex items-center"
           >
             <input
               type="text"
               placeholder="Tìm kiếm sản phẩm..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full mb-2 h-10 sm:h-12 lg:h-14 text-sm sm:text-base lg:text-lg text-gray-800 rounded-l-md border-none focus:outline-none focus:ring-2 focus:ring-orange-300 bg-white shadow-md transition-all duration-300"
+              className="w-full mb-2 h-8 sm:h-10 lg:h-10 text-xs sm:text-base lg:text-base text-gray-800 rounded-l-md border-none focus:outline-none focus:ring-2 focus:ring-orange-300 bg-white shadow-md transition-all duration-300"
             />
             <button
               type="submit"
-              className="mb-2 h-10 sm:h-12 lg:h-14 bg-blue-600 px-4 rounded-r-md hover:bg-blue-700 shadow-md transition-all duration-300 flex items-center justify-center"
+              className="mb-2 h-7 sm:h-10 lg:h-10 bg-blue-600 px-2 sm:px-2 rounded-r-md hover:bg-blue-700 shadow-md transition-all duration-300 flex items-center justify-center"
             >
               <svg
-                className="w-5 h-5 lg:w-6 lg:h-6"
+                className="w-4 h-4 sm:w-5 sm:h-5 lg:w-5 lg:h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -145,7 +154,7 @@ const NavBar = () => {
           {/* Danh mục và giỏ hàng */}
           <div className="w-full sm:w-auto flex sm:justify-start sm:space-x-4 md:space-x-6 lg:space-x-8">
             {/* Danh mục */}
-            <div className="relative category-group">
+            <div className="relative category-group z-40">
               <button
                 className="flex items-center space-x-1 hover:text-yellow-200 text-sm sm:text-base lg:text-lg font-medium transition-colors duration-200"
                 onClick={toggleCategory}
@@ -169,7 +178,7 @@ const NavBar = () => {
               <motion.div
                 className={`absolute bg-white text-gray-800 rounded-lg shadow-lg mt-2 w-40 sm:w-48 lg:w-56 border border-gray-100 ${
                   isCategoryOpen ? "block" : "hidden"
-                }`}
+                } z-50`}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{
                   opacity: isCategoryOpen ? 1 : 0,
@@ -195,7 +204,7 @@ const NavBar = () => {
                 )}
               </motion.div>
             </div>
-            {/* mục yêu thích */}
+            {/* Mục yêu thích */}
             <Link
               to="/favorites"
               className="relative flex items-center justify-center"
