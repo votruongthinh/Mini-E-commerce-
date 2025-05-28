@@ -44,7 +44,7 @@ const FavoritesPage = () => {
     if (sortBy === "price-asc") {
       filteredFavorites.sort((a, b) => a.price - b.price);
     } else if (sortBy === "price-desc") {
-      filteredFavorites.sort((a, b) => b.price - b.price);
+      filteredFavorites.sort((a, b) => b.price - a.price); // Fixed: Correct descending order
     } else if (sortBy === "name") {
       filteredFavorites.sort((a, b) => a.title.localeCompare(b.title));
     }
@@ -53,7 +53,6 @@ const FavoritesPage = () => {
     setTotal(filteredFavorites.length);
     setLoading(false);
 
-    // Debug: Kiểm tra giá trị total và filteredFavorites
     console.log("Filtered Favorites:", filteredFavorites);
     console.log("Total:", filteredFavorites.length);
   }, [allFavorites, priceRange, sortBy, maxPrice]);
@@ -68,9 +67,12 @@ const FavoritesPage = () => {
     const minPrice = Math.max(0, tempPriceRange[0] || 0);
     const maxPriceValue = Math.min(tempPriceRange[1] || maxPrice, maxPrice);
     if (minPrice > maxPriceValue) {
-      toast.error("Giá tối thiểu không thể lớn hơn giá tối đa!", {
-        position: "top-right",
-      });
+      toast.error(
+        "The minimum price cannot be greater than the maximum price!",
+        {
+          position: "top-right",
+        }
+      );
       return;
     }
     setPriceRange([minPrice, maxPriceValue]);
@@ -82,7 +84,7 @@ const FavoritesPage = () => {
     const product = allFavorites.find((p) => p.id === productId);
     if (product) {
       toggleFavorite(product);
-      toast.success("Đã xóa sản phẩm khỏi danh sách yêu thích!", {
+      toast.success("Product deleted from wishlist!", {
         position: "top-right",
       });
     }
@@ -93,7 +95,7 @@ const FavoritesPage = () => {
     allFavorites.forEach((product) => {
       toggleFavorite(product);
     });
-    toast.success("Đã xóa toàn bộ danh sách yêu thích!", {
+    toast.success("Deleted entire favorites list!", {
       position: "top-right",
     });
   };
@@ -104,7 +106,6 @@ const FavoritesPage = () => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
       window.scrollTo({ top: 0, behavior: "smooth" });
-      // Debug: Kiểm tra currentPage và totalPages
       console.log("Current Page:", page);
       console.log("Total Pages:", totalPages);
     }
@@ -153,7 +154,7 @@ const FavoritesPage = () => {
         <button
           onClick={() => handleRemoveFavorite(product.id)}
           className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors"
-          title="Xóa khỏi danh sách yêu thích"
+          title="Delete from favorites"
         >
           <svg
             className="w-5 h-5"
@@ -189,7 +190,7 @@ const FavoritesPage = () => {
   if (favorites.length === 0) {
     return (
       <div className="container mx-auto p-4 text-center">
-        <p className="text-gray-500">Chưa có sản phẩm yêu thích nào.</p>
+        <p className="text-gray-500">There are no favorite products yet.</p>
       </div>
     );
   }
@@ -216,13 +217,13 @@ const FavoritesPage = () => {
         transition={{ duration: 0.5, delay: 0.4 }}
       >
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold">Sản phẩm yêu thích</h2>
-          {favorites.length > 0 && (
+          <h2 className="text-2xl font-bold">Favorite products</h2>
+          {total > 0 && (
             <button
               onClick={handleClearFavorites}
-              className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
+              className="bg-[#DC3545] text-white px-4 py-2 rounded hover:bg-[#c82333] transition"
             >
-              Xóa tất cả
+              Delete All
             </button>
           )}
         </div>
@@ -230,16 +231,16 @@ const FavoritesPage = () => {
           <div className="flex flex-col sm:flex-row gap-2">
             <input
               type="number"
-              placeholder="Giá từ"
+              placeholder="From price"
               value={tempPriceRange[0] || ""}
               onChange={(e) =>
                 setTempPriceRange([+e.target.value || 0, tempPriceRange[1]])
               }
-              className="w-full px-3 py-2 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+              className="w-full px-4 py-2 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FB5533] transition-colors"
             />
             <input
               type="number"
-              placeholder="Đến"
+              placeholder="To price"
               value={tempPriceRange[1] === maxPrice ? "" : tempPriceRange[1]}
               onChange={(e) =>
                 setTempPriceRange([
@@ -247,30 +248,30 @@ const FavoritesPage = () => {
                   +e.target.value || maxPrice,
                 ])
               }
-              className="w-full px-3 py-2 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+              className="w-full px-4 py-2 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FB5533] transition-colors"
             />
             <button
               onClick={applyPriceFilter}
-              className="w-full sm:w-auto px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+              className="bg-[#20C997] text-white px-4 py-2 rounded hover:bg-[#17a589] transition"
             >
-              Áp dụng
+              Apply
             </button>
           </div>
 
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="w-full px-4 py-2 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors"
+            className="w-full px-4 py-2 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FB5533] transition-colors"
           >
-            <option value="">Sắp xếp</option>
-            <option value="price-asc">Giá: Thấp đến cao</option>
-            <option value="price-desc">Giá: Cao đến thấp</option>
-            <option value="name">Tên: A-Z</option>
+            <option value="">Sort by</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="name">Name: A-Z</option>
           </select>
         </div>
 
         <p className="mt-2 text-sm text-gray-500">
-          Giá tối đa: {maxPrice.toLocaleString()} đ
+          Maximum price: {maxPrice.toLocaleString()} đ
         </p>
       </motion.div>
 
@@ -290,9 +291,8 @@ const FavoritesPage = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.8 }}
         >
-          {/* Hiển thị số trang dạng "Trang X/Y" */}
           <div className="text-center mb-4 text-lg font-medium text-gray-700">
-            Trang {currentPage}/{totalPages}
+            Pages {currentPage}/{totalPages}
           </div>
           <div className="flex justify-center gap-1 sm:gap-2 overflow-x-auto scrollbar-hide">
             <button
@@ -300,7 +300,7 @@ const FavoritesPage = () => {
               disabled={currentPage === 1}
               className="px-1 py-0.5 sm:px-4 sm:py-2 bg-gray-200 rounded disabled:opacity-50 min-w-[32px] sm:min-w-[auto] text-sm sm:text-base"
             >
-              Trước
+              Previous
             </button>
             {getPaginationRange().map((page, index) =>
               page === "..." ? (
@@ -316,7 +316,7 @@ const FavoritesPage = () => {
                   onClick={() => handlePageChange(page)}
                   className={`px-1 py-0.5 sm:px-4 sm:py-2 rounded min-w-[32px] sm:min-w-[auto] text-sm sm:text-base ${
                     currentPage === page
-                      ? "bg-orange-500 text-white"
+                      ? "bg-[#FB5533] text-white"
                       : "bg-gray-200"
                   }`}
                 >
@@ -329,7 +329,7 @@ const FavoritesPage = () => {
               disabled={currentPage === totalPages}
               className="px-1 py-0.5 sm:px-4 sm:py-2 bg-gray-200 rounded disabled:opacity-50 min-w-[32px] sm:min-w-[auto] text-sm sm:text-base"
             >
-              Sau
+              Next
             </button>
           </div>
         </motion.div>

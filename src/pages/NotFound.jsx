@@ -23,23 +23,23 @@ const NotFound = () => {
             e.target.src = "https://via.placeholder.com/300x200?text=404"; // Fallback
           }}
         />
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">
-          Oops! Trang không tìm thấy
+        <h1 className="text-3xl sm:text-4xl font-sans text-gray-800 mb-4">
+          Oops! Page not found
         </h1>
         <p className="text-gray-600 mb-6">
-          Có vẻ bạn đã đi lạc. Đừng lo, hãy quay về trang chủ để tiếp tục mua
-          sắm!
+          Looks like you got lost. Don't worry, just go back to the home page to
+          continue shopping!
         </p>
         <Link
           to="/"
-          className="inline-block bg-orange-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600"
+          className="inline-block bg-orange-500 text-white px-6 py-3 rounded-lg font-sans hover:bg-orange-600"
         >
           <motion.span
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.3 }}
           >
-            Quay về trang chủ
+            Back to Home
           </motion.span>
         </Link>
       </div>

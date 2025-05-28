@@ -14,6 +14,19 @@ export const getProducts = async (page = 1, limit = 6) => {
   }
 };
 
+export const getRelatedProducts = async (category, currentProductId) => {
+  try {
+    const response = await axios.get(`${API_URL}/category/${category}`);
+    const related = response.data.products.filter(
+      (product) => product.id !== parseInt(currentProductId)
+    );
+    return related;
+  } catch (error) {
+    console.error("Error fetching related products:", error);
+    throw error;
+  }
+};
+
 export const getProductById = async (id) => {
   try {
     const response = await axios.get(`${API_URL}/${id}`);
@@ -26,7 +39,9 @@ export const getProductById = async (id) => {
 
 export const searchProducts = async (query) => {
   try {
-    const response = await axios.get(`${API_URL}/search?q=${query}`);
+    const response = await axios.get(
+      `${API_URL}/search?q=${encodeURIComponent(query)}`
+    );
     console.log("Search API response:", response.data);
     return response.data;
   } catch (error) {

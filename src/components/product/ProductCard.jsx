@@ -16,7 +16,7 @@ const ProductCard = ({ product, priceFormatted }) => {
         transition={{ duration: 0.3 }}
         data-testid="product-card"
       >
-        Sản phẩm không hợp lệ
+        Invalid product.
       </motion.div>
     );
   }
@@ -26,7 +26,7 @@ const ProductCard = ({ product, priceFormatted }) => {
   const handleAddToCart = () => {
     try {
       addToCart({ ...product, price: displayPrice });
-      toast.success(`${product.title} đã được thêm vào giỏ hàng!`, {
+      toast.success(`${product.title} added to cart!`, {
         position: "top-right",
       });
     } catch (error) {
@@ -51,24 +51,22 @@ const ProductCard = ({ product, priceFormatted }) => {
           className="w-full h-full object-contain"
         />
       </div>
-      <h3 className="text-lg font-semibold mt-2 line-clamp-2">
-        {product.title}
-      </h3>
-      <p className="text-red-500 font-bold">
-        {displayPrice.toLocaleString()} đ
+      <h3 className="text-lg font-sans mt-2 line-clamp-2">{product.title}</h3>
+      <p className="text-red-500 font-sans">
+        {displayPrice.toLocaleString()} VND
       </p>
       <div className="flex gap-2 mt-2">
         <Link
           to={`/product/${product.id}`}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-white text-[#FB5533] border border-[#FB5533] px-4 py-2 rounded hover:bg-[#FB5533] hover:text-white transition"
         >
-          Chi tiết
+          Detail
         </Link>
         <button
           onClick={handleAddToCart}
-          className="bg-green-500 cursor-pointer text-white px-4 py-2 rounded hover:bg-green-600"
+          className="bg-[#FB5533] text-white px-4 py-2 rounded hover:bg-[#e14c2a] transition"
         >
-          Thêm vào giỏ
+          Add to cart
         </button>
         <button
           onClick={() => toggleFavorite(product)}
