@@ -148,6 +148,7 @@ const NavBar = () => {
             to="/"
             onClick={handleLogoClick}
             className="flex items-center space-x-2 z-50"
+            data-id="logo"
           >
             <motion.img
               src={logo}
@@ -161,6 +162,7 @@ const NavBar = () => {
             className="sm:hidden focus:outline-none p-2 bg-white rounded-md shadow-md hover:bg-gray-100 transition-all duration-300 z-60"
             onClick={toggleMenu}
             aria-label="Toggle menu"
+            data-id="menu-toggle"
           >
             <svg
               className="w-6 h-6 text-[#FB5533]"
@@ -196,8 +198,10 @@ const NavBar = () => {
                 onChange={handleInputChange}
                 onFocus={() => search && setIsSuggestionOpen(true)}
                 className="w-full h-10 sm:h-11 lg:h-12 text-sm sm:text-base lg:text-lg text-gray-800 rounded-l-md border-none focus:outline-none focus:ring-2 focus:ring-orange-300 bg-white shadow-md transition-all duration-300"
+                data-id="search-input"
               />
               <button
+                data-id="search-button"
                 type="submit"
                 className="h-10 sm:h-11 lg:h-12 bg-[#FB5533] px-3 lg:px-4 rounded-r-md hover:bg-[#E6532D] shadow-lg transition-all duration-300 flex items-center justify-center"
               >
@@ -226,6 +230,7 @@ const NavBar = () => {
                 {suggestions.map((suggestion, index) => (
                   <div
                     key={index}
+                    data-id={`suggestion-${index}`}
                     className="px-4 py-2 hover:bg-orange-100 cursor-pointer text-sm sm:text-base"
                     onClick={() => handleSuggestionSelect(suggestion)}
                   >
@@ -248,7 +253,6 @@ const NavBar = () => {
             <motion.button
               className="flex items-center space-x-2 text-base sm:text-lg lg:text-xl text-gray-900 hover:text-[#FB5533] hover:bg-orange-100 hover:rounded-md px-3 py-2 transition-all duration-200"
               onClick={toggleCategory}
-              aria-label="Toggle categories menu"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.2 }}
             >
@@ -296,6 +300,7 @@ const NavBar = () => {
                 categories.map((cat) => (
                   <Link
                     key={cat.slug}
+                    data-id={`category-${cat.slug}`}
                     to={`/?category=${encodeURIComponent(cat.slug)}`}
                     className="block px-4 py-2 hover:bg-orange-100 hover:text-orange-700 text-sm sm:text-base lg:text-lg transition-colors duration-200 capitalize"
                     onClick={() => setIsCategoryOpen(false)}
@@ -329,6 +334,7 @@ const NavBar = () => {
             </Link>
             <Link
               to="/cart"
+              data-testid="cart-icon"
               className="relative flex items-center justify-center"
             >
               <motion.svg
@@ -360,3 +366,4 @@ const NavBar = () => {
 };
 
 export default NavBar;
+//

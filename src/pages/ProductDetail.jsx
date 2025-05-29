@@ -112,6 +112,7 @@ const ProductDetail = () => {
               Quantity:
             </label>
             <input
+              id="quantity"
               type="number"
               min="1"
               value={quantity}

@@ -1,12 +1,38 @@
-# React + Vite
+# Mini E-Commerce
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Framework chính: ReactJS (vite)
+Sytling sử dụng: TailwindCss
+Quản lý state sử dụng :useState /ContextAPI / Zustand
+Sử dụng Routing
+Gọi APi bằng Axios
+Sử dụng fakeAPi bằng dummyjson.com
+Lưu trạng thái tạm thời bằng localStorage / sessionStorage
+Sử dụng hiệu ứng Frammer Motion
+deloy lên vercel
 
-Currently, two official plugins are available:
+1.Clone src về máy:
+git clone https://github.com/votruongthinh/Mini-E-commerce-.git
+cd Mini-E-commerce
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+2.cài đặt thư viện
+npm install (node_modules)
+npm install @tailwindcss/vite axios framer-motion react react-dom react-lazy-load-image-component react-router-dom react-toastify zustand
 
-## Expanding the ESLint configuration
+3. cài đặt và test với Vitest
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+   - Cài các package cần thiết:
+     npm install --save-dev vitest @testing-library/user-event @testing-library/react @testing-library/jest-dom jsdom
+
+   - Tạo file vitest.config.js:
+     import { defineConfig } from 'vitest/config'; import react from '@vitejs/plugin-react';
+
+     export default defineConfig({ plugins: [react()], test: { environment: 'jsdom', globals: true, setupFiles: './setupTests.js' }, });
+
+   -Tạo file setupTests.js ở thư mục gốc
+   import '@testing-library/jest-dom';
+
+   -sử dụng câu lệnh để chạy test
+   npm run test
+
+4. chạy dự án với lệnh
+   npm run dev

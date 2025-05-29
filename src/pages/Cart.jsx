@@ -41,6 +41,7 @@ const Cart = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <button
+                    data-testid={`decrease-${item.id}`}
                     onClick={() =>
                       updateQuantity(item.id, Math.max(1, item.quantity - 1))
                     }
@@ -50,6 +51,7 @@ const Cart = () => {
                   </button>
                   <span className="w-6 text-center">{item.quantity}</span>
                   <button
+                    data-testid={`increase-${item.id}`}
                     onClick={() => updateQuantity(item.id, item.quantity + 1)}
                     className="w-8 h-8 bg-gray-200 rounded hover:bg-gray-300"
                   >
